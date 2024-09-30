@@ -17,12 +17,12 @@
  =======================================================================
 
  -----------------------------------------------------------------------
-Author       : 焱铭
-Date         : 2024-09-27 15:55:45 +0800
-LastEditTime : 2024-09-28 10:25:35 +0800
-Github       : https://github.com/YanMing-lxb/
-FilePath     : /Heat-Exchanger-Calibration-Calculator/src/logger_config.py
-Description  : 
+ Author       : 焱铭
+ Date         : 2024-09-27 15:55:45 +0800
+ LastEditTime : 2024-09-28 20:02:21 +0800
+ Github       : https://github.com/YanMing-lxb/
+ FilePath     : /Heat-Exchanger-Calibration-Calculator/src/logger_config.py
+ Description  : 
  -----------------------------------------------------------------------
 '''
 
