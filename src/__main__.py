@@ -19,9 +19,9 @@
  -----------------------------------------------------------------------
  Author       : 焱铭
  Date         : 2024-09-28 19:47:51 +0800
- LastEditTime : 2024-09-30 15:20:37 +0800
+LastEditTime : 2024-10-02 15:47:34 +0800
  Github       : https://github.com/YanMing-lxb/
- FilePath     : /Heat-Exchanger-Calibration-Calculator/src/__main__.py
+FilePath     : /Heat-Exchanger-Calibration-Calculator/src/__main__.py
  Description  : 
  -----------------------------------------------------------------------
 '''
@@ -31,6 +31,8 @@ import math
 from rich import print
 
 from logger_config import setup_logger
+from Nu_model import *
+from Re_model import *
 
 logger = setup_logger(True)
 
@@ -90,37 +92,7 @@ class D_h_class(object):
         return D_h
 
 
-class Re_class(object):
-    """雷诺数计算类"""
-
-    def __init__(self):
-        """ 无 """
-
-    def eq_cal(self, q_h, A, D_h, mu, rho_l, rho_g, X_m):
-        """Akers 等人提出的等效雷诺数
-        
-        :q_h: 质量流量 kg/s
-        :A: 截面积 m^2
-        :D_h: 水力直径 m
-        :mu: 动力粘度 Pa·s
-        :rho_l: 液态密度 kg/m^3
-        :rho_g: 气态密度 kg/m^3
-        :X_m: 干度 kg
-        :returns: Re_eq 等效雷诺数
-
-        @article{Akers1955CONDENSINGHT,
-          title={CONDENSING HEAT TRANSFER WITHIN HORIZONTAL TUBES},
-          author={William W. Akers and Harry A. Deans and Orrin K. Crosser},
-          journal={Chemical Engineering Progress},
-          year={1955},
-          url={https://api.semanticscholar.org/CorpusID:93664455}
-        }
-        """
-
-        return q_h / A * mu / (1 - X_m) + X_m * rho_l * rho_g**0.5
-
-
-def lmtd_calt_hin(t_hout, t_lin, t_lout):
+def lmtd_calt_hin(t_hin, t_hout, t_lin, t_lout):
     DeltaT_in = t_hin - t_lin
     DeltaT_out = t_hout - t_lout
     DeltaT_max = max(DeltaT_in, DeltaT_out)
