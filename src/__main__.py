@@ -19,7 +19,7 @@
  -----------------------------------------------------------------------
 Author       : 焱铭
 Date         : 2024-10-02 14:49:13 +0800
-LastEditTime : 2024-10-02 21:28:25 +0800
+LastEditTime : 2024-10-02 22:17:07 +0800
 Github       : https://github.com/YanMing-lxb/
 FilePath     : /Heat-Exchanger-Calibration-Calculator/src/__main__.py
 Description  : 
@@ -27,7 +27,6 @@ Description  :
 '''
 
 import math
-
 from rich import print
 
 from logger_config import setup_logger
@@ -209,9 +208,9 @@ def run():
     tmtd = lmtd_cal(t_hin, t_hout, t_cin, t_cout)
 
     Phi_res = epsilon*qc_min*(t_hin - t_cin)
-
     t_hout_res= t_hin - Phi_res/(q_hm*cp_h)
     t_cout_res = t_cin + Phi_res/(q_cm*cp_c)
+
 
     return Phi_res, t_hout_res, t_cout_res
 
