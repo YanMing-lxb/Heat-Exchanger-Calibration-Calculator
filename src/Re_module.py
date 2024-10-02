@@ -19,19 +19,21 @@
  -----------------------------------------------------------------------
 Author       : 焱铭
 Date         : 2024-10-02 15:46:58 +0800
-LastEditTime : 2024-10-02 15:46:59 +0800
+LastEditTime : 2024-10-02 20:41:13 +0800
 Github       : https://github.com/YanMing-lxb/
-FilePath     : /Heat-Exchanger-Calibration-Calculator/src/Re_model.py
+FilePath     : /Heat-Exchanger-Calibration-Calculator/src/Re_module.py
 Description  : 
  -----------------------------------------------------------------------
 '''
 
+import logging
 
 class Re_class(object):
     """雷诺数计算类"""
 
     def __init__(self):
         """ 无 """
+        self.logger = logging.getLogger(__name__)  # 调用_setup_logger方法设置日志记录器
     
     def common_cal(self,q_h, A, mu, rho):
         """雷诺数通用计算方法

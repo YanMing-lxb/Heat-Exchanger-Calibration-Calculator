@@ -19,13 +19,13 @@
  -----------------------------------------------------------------------
 Author       : 焱铭
 Date         : 2024-10-02 15:46:12 +0800
-LastEditTime : 2024-10-02 15:49:09 +0800
+LastEditTime : 2024-10-02 20:25:38 +0800
 Github       : https://github.com/YanMing-lxb/
-FilePath     : /Heat-Exchanger-Calibration-Calculator/src/Nu_model.py
+FilePath     : /Heat-Exchanger-Calibration-Calculator/src/Nu_module.py
 Description  : 
  -----------------------------------------------------------------------
 '''
-
+import logging
 
 class Nu_SP_class(object):
 
@@ -33,7 +33,8 @@ class Nu_SP_class(object):
 
     def __init__(self):
         """无 """
-    
+        self.logger = logging.getLogger(__name__)  # 调用_setup_logger方法设置日志记录器
+
     def YL_cal(self, Re, Pr, mu_f, mu_w):
         """Yan和Li拟合的努塞尔计算公式
 
@@ -49,6 +50,27 @@ class Nu_SP_class(object):
         
         return 0.2121*Re**0.78*Pr**(1/3)*(mu_f/mu_w)**0.14
     
+    def Okada(self, Re, Pr, ang_corrugated):
+        """Okada拟合的努塞尔计算公式
+        适用范围: Re=700-25000
+
+        :Re: 雷诺数
+        :Pr: 普朗特数
+        :ang_corrugated: 波纹角 ° 可选值有: 30、45、60、75
+        :returns: TODO
+        """
+
+        if ang_corrugated == 30:
+            Nu = 0.157 * Re**0.66*Pr**0.4
+        elif ang_corrugated == 45:
+            Nu = 0.249 * Re**0.64*Pr**0.4
+        elif ang_corrugated == 60:
+            Nu = 0.327 * Re**0.65*Pr**0.4
+        elif ang_corrugated == 75:
+            Nu = 0.478 * Re**0.62*Pr**0.4
+        else: 
+            self.logger.error("Okada 努塞尔拟合公式仅适用于波纹角为30°、45°、60°、75°")
+        return Nu
     
 class NU_TP_class(object):
 

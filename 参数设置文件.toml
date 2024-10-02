@@ -1,0 +1,39 @@
+
+
+# 结构参数 Structural parameters
+[SP]
+Flow_direction = 1 # 顺流：1 parallel flow  逆流：2 counter flow
+Hydraulic_diameter = 0.5 # 水力直径 m
+Effective_width = 0.2 # 板有效宽度 m
+Ripple_depth = 0.01 # 波纹深度 m
+Plate_thickness = 0.001 # 板厚度 m
+Cross_sectional_area = 1 # 截面积 m^2
+
+# 边界条件 Boundary_condition
+[BC]
+Temp_heat_inlet = 80 # 热侧入口温度 摄氏度
+Temp_heat_outlet = 60 # 热侧出口温度 摄氏度
+Temp_cool_inlet = 25 # 冷侧入口温度 摄氏度
+Temp_cool_outlet = 50 # 冷侧出口温度 摄氏度
+Mass_flow_heat = 0.15 # 热侧流量 kg/s
+Mass_flow_cool = 0.1 # 冷侧流量 kg/s
+
+# 固体物性参数 solid physical parameter
+[SPP] 
+Density = 135 # 密度 kg/m^3
+Specific_heat_capacity = 1350 # 比热容
+Thermal_conductivity = 21 # 导热率
+
+# 冷侧单相液体物性参数 fluid heat single phase physical parameter
+[FHSPPP]
+Density = 135 # 密度 kg/m^3
+Specific_heat_capacity = 1350 # 比热容
+Thermal_conductivity = 21 # 导热率
+Dynamic_viscosity = 0.01 # 动力粘度
+
+# 单相热侧液体物性参数 fluid cool single phase physical parameter
+[FCSPPP]
+Density = 135 # 密度 kg/m^3
+Specific_heat_capacity = 1350 # 比热容
+Thermal_conductivity = 21 # 导热率
+Dynamic_viscosity = 0.01 # 动力粘度
