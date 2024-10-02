@@ -19,7 +19,7 @@
  -----------------------------------------------------------------------
 Author       : 焱铭
 Date         : 2024-10-02 16:01:55 +0800
-LastEditTime : 2024-10-02 18:28:57 +0800
+LastEditTime : 2024-10-02 22:19:05 +0800
 Github       : https://github.com/YanMing-lxb/
 FilePath     : /Heat-Exchanger-Calibration-Calculator/src/config_module.py
 Description  : 
@@ -32,11 +32,10 @@ from pathlib import Path
 
 
 # 默认配置文件
-default_config = """
-
+default_config = """ # 参数设置
 # 结构参数 Structural parameters
 [SP]
-Flow_direction = 1 # 顺流：1 parallel flow  逆流：2 counter flow
+Flow_direction = 2 # 顺流：1 parallel flow  逆流：2 counter flow
 Hydraulic_diameter = 0.5 # 水力直径 m
 Effective_width = 0.2 # 板有效宽度 m
 Ripple_depth = 0.01 # 波纹深度 m
@@ -45,10 +44,10 @@ Cross_sectional_area = 1 # 截面积 m^2
 
 # 边界条件 Boundary_condition
 [BC]
-Temp_heat_inlet = 25 # 热侧入口温度 摄氏度
-Temp_heat_outlet = 25 # 热侧出口温度 摄氏度
+Temp_heat_inlet = 80 # 热侧入口温度 摄氏度
+Temp_heat_outlet = 89 # 热侧出口温度 摄氏度
 Temp_cool_inlet = 25 # 冷侧入口温度 摄氏度
-Temp_cool_outlet = 25 # 冷侧出口温度 摄氏度
+Temp_cool_outlet = 26 # 冷侧出口温度 摄氏度
 Mass_flow_heat = 0.15 # 热侧流量 kg/s
 Mass_flow_cool = 0.1 # 冷侧流量 kg/s
 

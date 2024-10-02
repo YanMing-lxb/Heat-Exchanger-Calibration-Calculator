@@ -1,5 +1,4 @@
-
-
+ # 参数设置
 # 结构参数 Structural parameters
 [SP]
 Flow_direction = 2 # 顺流：1 parallel flow  逆流：2 counter flow
