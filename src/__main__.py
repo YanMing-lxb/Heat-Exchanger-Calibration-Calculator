@@ -19,7 +19,7 @@
  -----------------------------------------------------------------------
 Author       : 焱铭
 Date         : 2024-10-02 14:49:13 +0800
-LastEditTime : 2024-10-02 22:27:10 +0800
+ LastEditTime : 2024-10-04 19:53:14 +0800
 Github       : https://github.com/YanMing-lxb/
 FilePath     : /Heat-Exchanger-Calibration-Calculator/src/__main__.py
 Description  : 
@@ -27,15 +27,18 @@ Description  :
 '''
 
 import math
+
 from rich import print
 
+from config_module import ConfigParser
+from F_module import f_SP_class
 from logger_config import setup_logger
 from Nu_module import *
 from Re_module import *
-from config_module import ConfigParser
 
 logger = setup_logger(True)
-CP = ConfigParser() # 实例化 ConfigParser 类
+CP = ConfigParser()  # 实例化 ConfigParser 类
+
 
 def Pr_cal(cp, k, mu):
     """计算普朗特数
@@ -47,7 +50,8 @@ def Pr_cal(cp, k, mu):
     :returns: Pr 普朗特数
 
     """
-    return cp*mu/k
+    return cp * mu / k
+
 
 # 计算平壁换热系数
 def k_plane_cal(h_h, h_c, sigma, k_s):
@@ -150,12 +154,28 @@ def epsilon_cal(FD_num, phase_change, ntu, R_c):
         if phase_change:
             R_c = 0
         res_epsilon = (1 - math.exp(-ntu *
-                                    (1 - R_c))) / (1 - R_c * math.exp(-ntu *(1 - R_c)))
+                                    (1 - R_c))) / (1 -
+                                                   R_c * math.exp(-ntu *
+                                                                  (1 - R_c)))
     logger.info(f"epsilon 为：{res_epsilon}")
     return res_epsilon
 
 
-cd = CP.init_config_file() # 初始化配置文件，获取配置文件中的参数 config_dict : cd
+def Delta_P(f, L, D_h, rho, v):
+    """计算压降
+
+    :f: 摩擦因子，通过经验公式估算
+    :L: 流动长度，通常为板式换热器的通道长度 m
+    :D_h: 水力直径 m
+    :rho: 密度 kg/m^3
+    :v: 流速 m/s
+    :returns: 压降 Pa
+
+    """
+    return f * L / D_h * rho * v**2 / 2
+
+
+cd = CP.init_config_file()  # 初始化配置文件，获取配置文件中的参数 config_dict : cd
 t_hin = cd["BC"]["Temp_heat_inlet"]
 t_hout = cd["BC"]["Temp_heat_outlet"]
 t_cin = cd["BC"]["Temp_cool_inlet"]
@@ -183,7 +203,8 @@ cp_c = cd["FCSPPP"]["Specific_heat_capacity"]
 k_fc = cd["FCSPPP"]["Thermal_conductivity"]
 mu_c = cd["FCSPPP"]["Dynamic_viscosity"]
 
-def run():
+
+def Thermal_cal():
     qc_max, qc_min = judge(q_hm, cp_h, q_cm, cp_c)
     rc = R_c(qc_max, qc_min)
     Dh_class = D_h_class()
@@ -202,21 +223,44 @@ def run():
 
     h_h = h_cal(Nu_h, k_fh, D_h)
     h_c = h_cal(Nu_c, k_fc, D_h)
-    
+
     k = k_plane_cal(h_h, h_c, sigma, k_s)
     ntu = ntu_cal(k, A, qc_min)
     epsilon = epsilon_cal(FD, False, ntu, rc)
 
     # tmtd = lmtd_cal(t_hin, t_hout, t_cin, t_cout)
 
-    Phi_res = epsilon*qc_min*(t_hin - t_cin)
-    t_hout_res= t_hin - Phi_res/(q_hm*cp_h)
-    t_cout_res = t_cin + Phi_res/(q_cm*cp_c)
+    Phi_res = epsilon * qc_min * (t_hin - t_cin)
+    t_hout_res = t_hin - Phi_res / (q_hm * cp_h)
+    t_cout_res = t_cin + Phi_res / (q_cm * cp_c)
 
     return Phi_res, t_hout_res, t_cout_res
 
-Phi, t_hout, t_cout = run()
 
+def Hydraulic_cal():
+    Re = Re_class()
+    Re_h = Re.common_cal(q_hm, A, mu_h, rho_h)
+    Re_c = Re.common_cal(q_cm, A, mu_c, rho_c)
+
+    v_h = q_hm / rho_h / D_h
+    v_c = q_cm / rho_c / D_h
+
+    F_class = f_SP_class()
+    f_h = F_class.YY_Hsich_cal(Re_h)
+    f_c = F_class.YY_Hsich_cal(Re_c)
+
+    Delta_P_h = Delta_P(f_h, 0.25, D_h, rho_h, v_h)
+    Delta_P_c = Delta_P(f_c, 0.25, D_h, rho_c, v_c)
+
+    return Delta_P_h, Delta_P_c
+
+
+Phi, t_hout, t_cout = Thermal_cal()
+Delta_P_h, Delta_P_c = Hydraulic_cal()
 print(f"换热量：{round(Phi,4)} W")
 print(f"热侧出口温度：{round(t_hout,4)} °C")
 print(f"冷侧出口温度：{round(t_cout,4)} °C")
+print(f"热侧压降：{round(Delta_P_h, 4)} Pa")
+print(f"冷侧压降：{round(Delta_P_c, 4)} Pa")
+
+#
