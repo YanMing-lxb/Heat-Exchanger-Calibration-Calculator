@@ -19,7 +19,7 @@
  -----------------------------------------------------------------------
 Author       : 焱铭
 Date         : 2024-10-02 15:46:12 +0800
-LastEditTime : 2024-10-02 20:25:38 +0800
+LastEditTime : 2024-10-08 16:37:09 +0800
 Github       : https://github.com/YanMing-lxb/
 FilePath     : /Heat-Exchanger-Calibration-Calculator/src/Nu_module.py
 Description  : 
@@ -50,7 +50,7 @@ class Nu_SP_class(object):
         
         return 0.2121*Re**0.78*Pr**(1/3)*(mu_f/mu_w)**0.14
     
-    def Okada(self, Re, Pr, ang_corrugated):
+    def Okada_cal(self, Re, Pr, ang_corrugated):
         """Okada拟合的努塞尔计算公式
         适用范围: Re=700-25000
 
@@ -79,7 +79,7 @@ class NU_TP_class(object):
     def __init__(self):
         """TODO: to be defined. """
     
-    def Nu_Wang(self, Cp_f, Delta_T, gamma, Re_L, Pr_l, rho_l, rho_g):
+    def Nu_Wang_cal(self, Cp_f, Delta_T, gamma, Re_L, Pr_l, rho_l, rho_g):
         """ Wang 将拟合的怒塞尔计算公式
         适用条件: 1. 2500 < Re < 5000 2. 冷凝
         [1] HU S, MA X, ZHOU W. Condensation heat transfer of ethanol-water vapor in a plate heat exchanger[J/OL]. Applied Thermal Engineering, 2017, 113: 1047-1055. DOI:10.1016/j.applthermaleng.2016.11.013.

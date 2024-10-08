@@ -19,7 +19,7 @@
  -----------------------------------------------------------------------
 Author       : 焱铭
 Date         : 2024-10-02 14:49:13 +0800
- LastEditTime : 2024-10-04 19:53:14 +0800
+LastEditTime : 2024-10-08 16:37:41 +0800
 Github       : https://github.com/YanMing-lxb/
 FilePath     : /Heat-Exchanger-Calibration-Calculator/src/__main__.py
 Description  : 
@@ -153,10 +153,7 @@ def epsilon_cal(FD_num, phase_change, ntu, R_c):
     if FD_num == 2:
         if phase_change:
             R_c = 0
-        res_epsilon = (1 - math.exp(-ntu *
-                                    (1 - R_c))) / (1 -
-                                                   R_c * math.exp(-ntu *
-                                                                  (1 - R_c)))
+        res_epsilon = (1 - math.exp(-ntu * (1 - R_c))) / (1 - R_c * math.exp(-ntu * (1 - R_c)))
     logger.info(f"epsilon 为：{res_epsilon}")
     return res_epsilon
 
@@ -177,9 +174,9 @@ def Delta_P(f, L, D_h, rho, v):
 
 cd = CP.init_config_file()  # 初始化配置文件，获取配置文件中的参数 config_dict : cd
 t_hin = cd["BC"]["Temp_heat_inlet"]
-t_hout = cd["BC"]["Temp_heat_outlet"]
+#  t_hout = cd["BC"]["Temp_heat_outlet"]
 t_cin = cd["BC"]["Temp_cool_inlet"]
-t_cout = cd["BC"]["Temp_cool_outlet"]
+#  t_cout = cd["BC"]["Temp_cool_outlet"]
 
 q_hm = cd["BC"]["Mass_flow_heat"]
 q_cm = cd["BC"]["Mass_flow_cool"]
@@ -218,8 +215,8 @@ def Thermal_cal():
     Pr_c = Pr_cal(cp_c, k_fc, mu_c)
 
     Nu_SP = Nu_SP_class()
-    Nu_h = Nu_SP.Okada(Re_h, Pr_h, 60)
-    Nu_c = Nu_SP.Okada(Re_c, Pr_c, 60)
+    Nu_h = Nu_SP.Okada_cal(Re_h, Pr_h, 60)
+    Nu_c = Nu_SP.Okada_cal(Re_c, Pr_c, 60)
 
     h_h = h_cal(Nu_h, k_fh, D_h)
     h_c = h_cal(Nu_c, k_fc, D_h)
