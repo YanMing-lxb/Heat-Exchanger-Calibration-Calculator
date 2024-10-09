@@ -72,6 +72,13 @@ class Nu_SP_class(object):
             self.logger.error("Okada 努塞尔拟合公式仅适用于波纹角为30°、45°、60°、75°")
         return Nu
     
+    def Gulenoglu_C_1(self, Re, Pr, u, u_w):
+        """Gulenoglu-C 努塞尔计算公式
+        适用范围: Re=300-5000,波纹角30°,φ1.17
+        """
+
+        
+    
 class NU_TP_class(object):
 
     """两相努塞尔计算类"""
