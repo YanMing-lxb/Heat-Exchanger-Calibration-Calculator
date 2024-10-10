@@ -58,12 +58,13 @@ class f_SP_class(object):
         来源：[1] LIM J, SONG K S, KIM D, 等. Condensation heat transfer characteristics of R245fa in a shell and plate heat exchanger for high-temperature heat pumps[J/OL]. International Journal of Heat and Mass Transfer, 2018, 127: 730-739. DOI:10.1016/j.ijheatmasstransfer.2018.06.143.
         """
         return 24502 * Re_eq**(-0.8521) * Re_f**(-0.1856)
-    def Gulenoglu_C_1(self, Re,fai):
+    def Gulenoglu_C_1_cal(self, Re,fai):
         """
         Gulenoglu 等人三种垫片板式换热器中使用的的摩擦因子计算公式1（φ=1.17与2相同）
 
         适用范围：波纹角30°，工质为水
         :Re: 雷诺数 300～5000
+        :fai: 放大系数
         :returns: 摩擦因子
 
         来源：[25] Gulenoglu C, Akturk F, Aradag S, et al. 
@@ -71,25 +72,26 @@ class f_SP_class(object):
             International Journal of Thermal Sciences, 2014, 75: 249-256.
         """
         if fai==1.17:
-            F=0.1371*Re**(0.-1.146)+1.139
+            F=259.9*Re**(-0.9227)+1.246
         elif fai==1.288:
             F=0.00374*Re**(0.5981)+0.9132
         return F
     
-    def Gulenoglu_C_2(self, Re,fai):
+    def Gulenoglu_C_2_cal(self, Re,fai):
         """
         Gulenoglu 等人三种垫片板式换热器中使用的摩擦因子计算公式2（φ=1.288与1相同）
 
         适用范围：波纹角30°，工质为水
         :Re: 雷诺数 300～5000
+        :fai: 放大系数
         :returns: 摩擦因子
 
         来源：[25] Gulenoglu C, Akturk F, Aradag S, et al. 
             Experimental comparison of performances of three different plates for gasketed plate heat exchangers[J]. 
             International Journal of Thermal Sciences, 2014, 75: 249-256.
         """
-        if fai==1.17:
+        if fai==1.288:
             F=0.00374*Re**(0.5981)+0.9132
-        elif fai==1.288:
+        elif fai==1.17:
             F=1371*Re**(-1.146)+1.139
         return F

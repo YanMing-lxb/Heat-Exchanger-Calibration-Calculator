@@ -72,12 +72,61 @@ class Nu_SP_class(object):
             self.logger.error("Okada 努塞尔拟合公式仅适用于波纹角为30°、45°、60°、75°")
         return Nu
     
-    def Gulenoglu_C_1(self, Re, Pr, u, u_w):
+    def Gulenoglu_C_1_cal(self, Nu, Re, Pr, u, u_w, fai):
         """Gulenoglu-C 努塞尔计算公式
-        适用范围: Re=300-5000,波纹角30°,φ1.17
+        适用范围: Re=300-5000,波纹角30°,工质为水
+
+        :Re: 雷诺数   300~5000
+        :Pr: 普朗特数
+        :fai: 放大系数
+        :u: 动力粘度
+        :u_w: 不确定，推测为外表面粘度或者壁面附近黏度
+
+        来源：[25] Gulenoglu C, Akturk F, Aradag S, et al.
+        Experimental comparison of performances of three different plates for gasketed plate heat exchangers[J]. 
+        International Journal of Thermal Sciences, 2014, 75: 249-256.
         """
-        
-        
+        if fai==1.17:
+            Nu=0.32867*Re**0.68*Pr**(0.1/3)*(u/u_w)**0.14
+        elif fai==1.288:
+            Nu=0.17422*Re**0.7*Pr**(0.1/3)*(u/u_w)**0.14
+        return Nu
+            
+    def Gulenoglu_C_2_cal(self, Re, Pr, u, u_w, fai):
+        """Gulenoglu-C 努塞尔计算公式
+        适用范围: Re=300-5000,波纹角30°,工质为水
+
+        :Re: 雷诺数   300~5000
+        :Pr: 普朗特数
+        :fai: 放大系数
+        :u: 动力粘度
+        :u_w: 不确定，推测为外表面粘度或者壁面附近黏度
+
+        来源：[25] Gulenoglu C, Akturk F, Aradag S, et al.
+        Experimental comparison of performances of three different plates for gasketed plate heat exchangers[J]. 
+        International Journal of Thermal Sciences, 2014, 75: 249-256.
+        """
+        if fai==1.17:
+            Nu=0.3277*Re**0.675*Pr**(0.1/3)*(u/u_w)**0.14
+        elif fai==1.288:
+            Nu=0.17422*Re**0.7*Pr**(0.1/3)*(u/u_w)**0.14
+        return Nu
+    
+    def LinJunYU_cal(self, Re, Pr, u_m, u_wall):
+        """Lin-Jun-YU 努塞尔计算公式
+        适用范围: Re=1000-3000,工质为水/r245fa,v型角度 β SPHE 50° BPHE 60°,
+        表面放大系数φ SPHE 1.16 BPHE 1.14,波纹纵横比ʘ SPHE 0.27 BPHE 0.25
+
+        :Re: 雷诺数   300~5000
+        :Pr: 普朗特数
+        :u_m: 不确定 动力粘度
+        :u_wall: 不确定，推测为外表面粘度或者壁面附近黏度
+
+        来源：[4] Junyub Lim, Kang Sub Song, Dongwoo Kim, DongChan Lee, Yongchan Kim,
+        Condensation heat transfer characteristics of R245fa in a shell and plate heat exchanger for high-temperature heat pumps,
+        International Journal of Heat and Mass Transfer, 127, 2018, 730-739.
+        """
+        return 0.0508*Re**0.7304*Pr**0.33(u_m/u_wall)**0.14
     
 class NU_TP_class(object):
 
