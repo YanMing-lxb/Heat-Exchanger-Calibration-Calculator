@@ -26,6 +26,7 @@ Description  :
  -----------------------------------------------------------------------
 '''
 import logging
+import math
 
 class Nu_SP_class(object):
 
@@ -141,6 +142,30 @@ class Nu_SP_class(object):
             International Journal of Thermal Sciences, 171,2022.
             """
         return 0.1735*Re**0.4655*Pr**0.4*(1+fai)**0.692
+    
+    def Tapacob_cal(self,Re,Pr,h,L_s,T_1,T_2,d_e,d_0):
+        """Tapacob 努塞尔计算公式
+        适用范围：适于任何流道断面的传热通式,对大多数波纹板片都可得出满意的结果 
+
+        :Re: 雷诺数
+        :Pr: 普朗特数
+        :y,x,m,Z中间量
+        :h: 波纹高度
+        :L_s: 波纹间距
+        :T_1: 进口温度
+        :T_2: 出口温度
+        :d_e: 当量直径
+        :d_0: 1mm
+        
+        来源：未检索到原文
+        """
+        y=(1.2+(3+3.15*Z)*d_e/d_0)/(7+(4-4*Z)*d_e/d_0)
+        x=0.1+0.0189*(T_2-T_1)
+        m=0.025+Z
+        n=(0.26-0.065*Z)*(T_2-T_1 )**0.186
+        Z=h/L_s
+        e=math.e
+        return 1.5*Re**n*Pr**0.4*y*e**(-x)*e**m
     
 class NU_TP_class(object):
 
