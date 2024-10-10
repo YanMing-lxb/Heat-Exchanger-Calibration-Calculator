@@ -95,3 +95,16 @@ class f_SP_class(object):
         elif fai==1.17:
             F=1371*Re**(-1.146)+1.139
         return F
+    def Alklaibi_cal(self, Re, fai):
+        """
+        Alklaibi 等人提出的垫片板式换热器中使用的摩擦因子计算公式
+        适用范围：Re：300~1000， φ 0~0.3%, β 30°， 工作介质制冷剂（MWCNT/水纳米流体）/水的板式换热器
+         
+        :Re: 雷诺数   300~1000
+        :fai: 颗粒体积浓度
+
+        来源：[8] A.M. Alklaibi, L. Syam Sundar, Kotturu V.V. Chandra Mouli,
+        Experimental investigation on the performance of hybrid Fe3O4 coated MWCNT/Water nanofluid as a coolant of a Plate heat exchanger,
+        International Journal of Thermal Sciences, 171,2022.
+        """
+        return (69.96/Re)/(1+fai)**(-0.24)

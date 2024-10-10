@@ -128,6 +128,20 @@ class Nu_SP_class(object):
         """
         return 0.0508*Re**0.7304*Pr**0.33(u_m/u_wall)**0.14
     
+    def Alklaibi_cal(self, Re, Pr, fai):
+        """Alklaibi 努塞尔计算公式
+            适用范围 Re 300~1000, Pr 5.5~6.5, φ 0~0.3%, β 30°， 工作介质制冷剂（MWCNT/水纳米流体）/水的板式换热器
+            
+            :Re: 雷诺数   300~1000
+            :Pr: 普朗特数
+            :fai: 颗粒体积浓度
+
+            来源：[8] A.M. Alklaibi, L. Syam Sundar, Kotturu V.V. Chandra Mouli,
+            Experimental investigation on the performance of hybrid Fe3O4 coated MWCNT/Water nanofluid as a coolant of a Plate heat exchanger,
+            International Journal of Thermal Sciences, 171,2022.
+            """
+        return 0.1735*Re**0.4655*Pr**0.4*(1+fai)**0.692
+    
 class NU_TP_class(object):
 
     """两相努塞尔计算类"""
