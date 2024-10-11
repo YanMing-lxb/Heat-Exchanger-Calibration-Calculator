@@ -108,3 +108,43 @@ class f_SP_class(object):
         International Journal of Thermal Sciences, 171,2022.
         """
         return (69.96/Re)/(1+fai)**(-0.24)
+    
+    def He_Qing_Qiong_cal(self,Re,F):
+        """
+        He-Qing-Qiong 等人提出的摩擦因子计算公式
+        适用范围：波纹夹角45°，横波波距30mm，纵波波距16mm，纵波波高1.5mm，工质为水、油
+
+        :Re: 雷诺数
+
+        来源：[12] 何庆琼.复合波纹板式换热器换热与阻力特性研究[D].山东大学,2007.
+        """
+        if Re<500 and Re>50:
+            F=27.487*Re**(-0.5785)
+        elif Re<20000 and Re>2000:
+            F=4.9772*Re**(-0.31550)
+        return F
+
+    def Amooie_FMM_cal(self,Re,fai):
+        """
+        Amooie, F.M.M. 等人摩擦因子计算公式
+        适用范围：Re：0.8~2220，流动工质是水的水平波纹板式换热器
+
+        :Re: 雷诺数
+        :fai: 未知
+
+        来源：[18] Amooie, F.M.M., Flow distribution in plate heat exchanger [D]. PhD Thesis, University of Bradford, UK, 1997.
+        """
+        return fai*(26*fai/Re+0.16)
+    
+    def Pantzali_MN_cal(self,Re,fai):
+        """
+        Pantzali, M.N. 等人摩擦因子计算公式
+        适用范围：纳米流体作为冷却剂在板式换热器，
+
+        :Re: 雷诺数
+
+        来源：[22] Pantzali M N, Mouza A A, Paras S V. 
+        Investigating the efficacy of nanofluids as coolants in plate heat exchangers (PHE)[J]. 
+        Chemical Engineering Science, 2009, 64(14): 3290-3300.
+        """
+        return 14.5*Re**(-0.135)

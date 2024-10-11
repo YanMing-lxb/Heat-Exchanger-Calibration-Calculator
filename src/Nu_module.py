@@ -80,8 +80,8 @@ class Nu_SP_class(object):
         :Re: 雷诺数   300~5000
         :Pr: 普朗特数
         :fai: 放大系数
-        :u: 动力粘度
-        :u_w: 不确定，推测为外表面粘度或者壁面附近黏度
+        :u: 平均温度下的动力粘度
+        :u_w: 壁面温度下的黏度
 
         来源：[25] Gulenoglu C, Akturk F, Aradag S, et al.
         Experimental comparison of performances of three different plates for gasketed plate heat exchangers[J]. 
@@ -100,8 +100,8 @@ class Nu_SP_class(object):
         :Re: 雷诺数   300~5000
         :Pr: 普朗特数
         :fai: 放大系数
-        :u: 动力粘度
-        :u_w: 不确定，推测为外表面粘度或者壁面附近黏度
+        :u: 平均温度下的动力粘度
+        :u_w: 壁面温度下的动力黏度
 
         来源：[25] Gulenoglu C, Akturk F, Aradag S, et al.
         Experimental comparison of performances of three different plates for gasketed plate heat exchangers[J]. 
@@ -120,8 +120,8 @@ class Nu_SP_class(object):
 
         :Re: 雷诺数   300~5000
         :Pr: 普朗特数
-        :u_m: 不确定 动力粘度
-        :u_wall: 不确定，推测为外表面粘度或者壁面附近黏度
+        :u_m: 平均温度下的动力粘度
+        :u_wall: 壁面温度下的动力黏度
 
         来源：[4] Junyub Lim, Kang Sub Song, Dongwoo Kim, DongChan Lee, Yongchan Kim,
         Condensation heat transfer characteristics of R245fa in a shell and plate heat exchanger for high-temperature heat pumps,
@@ -166,6 +166,73 @@ class Nu_SP_class(object):
         Z=h/L_s
         e=math.e
         return 1.5*Re**n*Pr**0.4*y*e**(-x)*e**m
+    
+    def He_Qing_Qiong_cold(self,Re,Pr,u_f,u_w,Nu):
+        """He-Qing-Qiong 努塞尔计算公式
+        适用范围：波纹夹角45°，横波波距30mm，纵波波距16mm，纵波波高1.5mm，工质为水、油
+        适用于冷侧
+
+        :Re: 雷诺数
+        :Pr: 普朗特数
+        :u_f: 平均温度下的动力粘度
+        :u_w: 壁面温度下的动力黏度
+
+        来源：[12] 何庆琼.复合波纹板式换热器换热与阻力特性研究[D].山东大学,2007.
+        """
+        if Re<500 and Re>50:
+            Nu=0.3942*Re**0.5473*Pr**0.4*(u_f/u_w)**0.14
+        elif Re<20000 and Re>2000:
+            Nu=0.1579*Re**0.6463*Pr**0.4
+        return Nu
+
+    def He_Qing_Qiong_hot(self,Re,Pr,u_f,u_w,Nu):
+        """He-Qing-Qiong 努塞尔计算公式
+        适用范围：波纹夹角45°，横波波距30mm，纵波波距16mm，纵波波高1.5mm，工质为水、油
+        适用于热侧
+
+        :Re: 雷诺数
+        :Pr: 普朗特数
+        :u_f: 平均温度下的动力粘度
+        :u_w: 壁面温度下的动力黏度
+
+        来源：[12] 何庆琼.复合波纹板式换热器换热与阻力特性研究[D].山东大学,2007.
+        """
+        if Re<500 and Re>50:
+            Nu=0.3942*Re**0.5473*Pr**0.3*(u_f/u_w)**0.14
+        elif Re<20000 and Re>2000:
+            Nu=0.1579*Re**0.6463*Pr**0.3
+        return Nu
+    
+    def Saranmanduh_Borjigin_cal(self,Re,Pr,Lambda,ff):
+        """
+        Saranmanduh Borjigin nu 计算公式
+        适用范围：Re 3000~100000,气-气板式换热器
+
+        :Re: 雷诺数
+        :Pr: 普朗特数
+        :Lambda: 导热系数
+        :ff: 摩擦因数
+
+        来源：[14] Saranmanduh Borjigin, Suritu Bai, Keqilao Meng, Hexi Baoyin,
+        Heat recovery from kitchen by using range hood with gas-gas plate heat exchanger,
+        Case Studies in Thermal Engineering, 49,2023.
+        """
+        return (0.5*ff*(Re-1000)*Pr)/(1.07+12.7*(0.5*ff)**0.5*(Pr**(2/3)-1))\
+        
+    def Pantzali_MN_cal(self,Re,Pr):
+        """
+        Pantzali, M.N. 等人努塞尔数计算公式
+        适用范围：纳米流体作为冷却剂在板式换热器，
+
+        :Re: 雷诺数
+        :Pr: 普朗特数
+
+        来源：[22] Pantzali M N, Mouza A A, Paras S V. 
+        Investigating the efficacy of nanofluids as coolants in plate heat exchangers (PHE)[J]. 
+        Chemical Engineering Science, 2009, 64(14): 3290-3300.
+        """
+        return 0.247*Re**(0.66)*Pr**0.4
+
     
 class NU_TP_class(object):
 
