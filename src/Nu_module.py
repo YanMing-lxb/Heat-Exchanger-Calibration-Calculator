@@ -100,8 +100,8 @@ class Nu_SP_class(object):
         :Re: 雷诺数   300~5000
         :Pr: 普朗特数
         :fai: 放大系数
-        :u: 平均温度下的动力粘度
-        :u_w: 壁面温度下的动力黏度
+        :u: 平均温度下的动力粘度值
+        :u_w: 壁面温度下的动力黏度值
 
         来源：[25] Gulenoglu C, Akturk F, Aradag S, et al.
         Experimental comparison of performances of three different plates for gasketed plate heat exchangers[J]. 
