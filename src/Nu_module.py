@@ -19,7 +19,7 @@
  -----------------------------------------------------------------------
 Author       : 焱铭
 Date         : 2024-10-02 15:46:12 +0800
-LastEditTime : 2024-10-08 16:37:09 +0800
+LastEditTime : 2024-10-15 18:45:03 +0800
 Github       : https://github.com/YanMing-lxb/
 FilePath     : /Heat-Exchanger-Calibration-Calculator/src/Nu_module.py
 Description  : 
@@ -73,61 +73,61 @@ class Nu_SP_class(object):
             self.logger.error("Okada 努塞尔拟合公式仅适用于波纹角为30°、45°、60°、75°")
         return Nu
     
-    def Gulenoglu_C_1_cal(self, Nu, Re, Pr, u, u_w, fai):
+    def Gulenoglu_C_1_cal(self, Nu, Re, Pr, mu, mu_w, fai):
         """Gulenoglu-C 努塞尔计算公式
         适用范围: Re=300-5000,波纹角30°,工质为水
 
         :Re: 雷诺数   300~5000
         :Pr: 普朗特数
         :fai: 放大系数
-        :u: 平均温度下的动力粘度
-        :u_w: 壁面温度下的黏度
+        :mu: 平均温度下的动力粘度
+        :mu_w: 壁面温度下的黏度
 
         来源：[25] Gulenoglu C, Akturk F, Aradag S, et al.
         Experimental comparison of performances of three different plates for gasketed plate heat exchangers[J]. 
         International Journal of Thermal Sciences, 2014, 75: 249-256.
         """
         if fai==1.17:
-            Nu=0.32867*Re**0.68*Pr**(0.1/3)*(u/u_w)**0.14
+            Nu=0.32867*Re**0.68*Pr**(0.1/3)*(mu/mu_w)**0.14
         elif fai==1.288:
-            Nu=0.17422*Re**0.7*Pr**(0.1/3)*(u/u_w)**0.14
+            Nu=0.17422*Re**0.7*Pr**(0.1/3)*(mu/mu_w)**0.14
         return Nu
             
-    def Gulenoglu_C_2_cal(self, Re, Pr, u, u_w, fai):
+    def Gulenoglu_C_2_cal(self, Re, Pr, mu, mu_w, fai):
         """Gulenoglu-C 努塞尔计算公式
         适用范围: Re=300-5000,波纹角30°,工质为水
 
         :Re: 雷诺数   300~5000
         :Pr: 普朗特数
         :fai: 放大系数
-        :u: 平均温度下的动力粘度值
-        :u_w: 壁面温度下的动力黏度值
+        :mu: 平均温度下的动力粘度值
+        :mu_w: 壁面温度下的动力黏度值
 
         来源：[25] Gulenoglu C, Akturk F, Aradag S, et al.
         Experimental comparison of performances of three different plates for gasketed plate heat exchangers[J]. 
         International Journal of Thermal Sciences, 2014, 75: 249-256.
         """
         if fai==1.17:
-            Nu=0.3277*Re**0.675*Pr**(0.1/3)*(u/u_w)**0.14
+            Nu=0.3277*Re**0.675*Pr**(0.1/3)*(mu/mu_w)**0.14
         elif fai==1.288:
-            Nu=0.17422*Re**0.7*Pr**(0.1/3)*(u/u_w)**0.14
+            Nu=0.17422*Re**0.7*Pr**(0.1/3)*(mu/mu_w)**0.14
         return Nu
     
-    def LinJunYU_cal(self, Re, Pr, u_m, u_wall):
+    def LinJunYU_cal(self, Re, Pr, mu_m, mu_w):
         """Lin-Jun-YU 努塞尔计算公式
         适用范围: Re=1000-3000,工质为水/r245fa,v型角度 β SPHE 50° BPHE 60°,
         表面放大系数φ SPHE 1.16 BPHE 1.14,波纹纵横比ʘ SPHE 0.27 BPHE 0.25
 
         :Re: 雷诺数   300~5000
         :Pr: 普朗特数
-        :u_m: 平均温度下的动力粘度
-        :u_wall: 壁面温度下的动力黏度
+        :mu_m: 平均温度下的动力粘度
+        :mu_w: 壁面温度下的动力黏度
 
         来源：[4] Junyub Lim, Kang Sub Song, Dongwoo Kim, DongChan Lee, Yongchan Kim,
         Condensation heat transfer characteristics of R245fa in a shell and plate heat exchanger for high-temperature heat pumps,
         International Journal of Heat and Mass Transfer, 127, 2018, 730-739.
         """
-        return 0.0508*Re**0.7304*Pr**0.33(u_m/u_wall)**0.14
+        return 0.0508*Re**0.7304*Pr**0.33(mu_m/mu_w)**0.14
     
     def Alklaibi_cal(self, Re, Pr, fai):
         """Alklaibi 努塞尔计算公式
@@ -143,62 +143,62 @@ class Nu_SP_class(object):
             """
         return 0.1735*Re**0.4655*Pr**0.4*(1+fai)**0.692
     
-    def Tapacob_cal(self,Re,Pr,h,L_s,T_1,T_2,d_e,d_0):
-        """Tapacob 努塞尔计算公式
-        适用范围：适于任何流道断面的传热通式,对大多数波纹板片都可得出满意的结果 
+    # def Tapacob_cal(self,Re,Pr,h,L_s,T_in,T_out,d_e,d_0):
+    #     """Tapacob 努塞尔计算公式
+    #     适用范围：适于任何流道断面的传热通式,对大多数波纹板片都可得出满意的结果 
 
-        :Re: 雷诺数
-        :Pr: 普朗特数
-        :y,x,m,Z中间量
-        :h: 波纹高度
-        :L_s: 波纹间距
-        :T_1: 进口温度
-        :T_2: 出口温度
-        :d_e: 当量直径
-        :d_0: 1mm
+    #     :Re: 雷诺数
+    #     :Pr: 普朗特数
+    #     :y,x,m,Z中间量
+    #     :h: 波纹高度
+    #     :L_s: 波纹间距
+    #     :T_in: 进口温度
+    #     :T_out: 出口温度
+    #     :d_e: 当量直径
+    #     :d_0: 1mm
         
-        来源：未检索到原文
-        """
-        y=(1.2+(3+3.15*Z)*d_e/d_0)/(7+(4-4*Z)*d_e/d_0)
-        x=0.1+0.0189*(T_2-T_1)
-        m=0.025+Z
-        n=(0.26-0.065*Z)*(T_2-T_1 )**0.186
-        Z=h/L_s
-        e=math.e
-        return 1.5*Re**n*Pr**0.4*y*e**(-x)*e**m
+    #     来源：未检索到原文
+    #     """
+    #     y=(1.2+(3+3.15*Z)*d_e/d_0)/(7+(4-4*Z)*d_e/d_0)
+    #     x=0.1+0.0189*(T_out-T_in)
+    #     m=0.025+Z
+    #     n=(0.26-0.065*Z)*(T_out-T_in )**0.186
+    #     Z=h/L_s
+    #     e=math.e
+    #     return 1.5*Re**n*Pr**0.4*y*e**(-x)*e**m
     
-    def He_Qing_Qiong_cold(self,Re,Pr,u_f,u_w,Nu):
+    def He_Qing_Qiong_cold(self,Re,Pr,mu_f,mu_w,Nu):
         """He-Qing-Qiong 努塞尔计算公式
         适用范围：波纹夹角45°，横波波距30mm，纵波波距16mm，纵波波高1.5mm，工质为水、油
         适用于冷侧
 
         :Re: 雷诺数
         :Pr: 普朗特数
-        :u_f: 平均温度下的动力粘度
-        :u_w: 壁面温度下的动力黏度
+        :mu_f: 平均温度下的动力粘度
+        :mu_w: 壁面温度下的动力黏度
 
         来源：[12] 何庆琼.复合波纹板式换热器换热与阻力特性研究[D].山东大学,2007.
         """
         if Re<500 and Re>50:
-            Nu=0.3942*Re**0.5473*Pr**0.4*(u_f/u_w)**0.14
+            Nu=0.3942*Re**0.5473*Pr**0.4*(mu_f/mu_w)**0.14
         elif Re<20000 and Re>2000:
             Nu=0.1579*Re**0.6463*Pr**0.4
         return Nu
 
-    def He_Qing_Qiong_hot(self,Re,Pr,u_f,u_w,Nu):
+    def HeQQ_hot_cal(self,Re,Pr,mu_f,mu_w,Nu):
         """He-Qing-Qiong 努塞尔计算公式
         适用范围：波纹夹角45°，横波波距30mm，纵波波距16mm，纵波波高1.5mm，工质为水、油
         适用于热侧
 
         :Re: 雷诺数
         :Pr: 普朗特数
-        :u_f: 平均温度下的动力粘度
-        :u_w: 壁面温度下的动力黏度
+        :mu_f: 平均温度下的动力粘度
+        :mu_w: 壁面温度下的动力黏度
 
         来源：[12] 何庆琼.复合波纹板式换热器换热与阻力特性研究[D].山东大学,2007.
         """
         if Re<500 and Re>50:
-            Nu=0.3942*Re**0.5473*Pr**0.3*(u_f/u_w)**0.14
+            Nu=0.3942*Re**0.5473*Pr**0.3*(mu_f/mu_w)**0.14
         elif Re<20000 and Re>2000:
             Nu=0.1579*Re**0.6463*Pr**0.3
         return Nu
