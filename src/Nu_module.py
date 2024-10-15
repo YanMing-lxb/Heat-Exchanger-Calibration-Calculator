@@ -27,6 +27,7 @@ Description  :
 '''
 import logging
 import math
+import sys
 
 class Nu_SP_class(object):
 
@@ -232,6 +233,76 @@ class Nu_SP_class(object):
         Chemical Engineering Science, 2009, 64(14): 3290-3300.
         """
         return 0.247*Re**(0.66)*Pr**0.4
+    
+    def MM_cal(self, Re, Pr, ang_corrugated, projection_coefficient, mu_f, mu_w):
+        """Muley和Manglik拟合的努塞尔计算公式
+        适用范围:Re>1000
+
+        :Re: 雷诺数
+        :Pr:普朗克数
+        :ang_corrugated: 波纹角 ° 范围:30°~60°
+        :projection_coefficient: 面积投影系数
+        :mu_f: 不确定
+        :mu_w: 不确定
+        :returns: TODO
+        """
+        return (0.2668-0.006967*ang_corrugated+7.244e-5*ang_corrugated**2)*(20.78-50.94*projection_coefficient+41.16*projection_coefficient**2-10.15*projection_coefficient**3)*Re**{0.728+0.0543*math.sin[(math.pi*ang_corrugated)/45+3.7]}*Pr**(1/3)*(mu_f/mu_w)*0.14
+
+    def Nu_SK_cal(self, C1, C2, Re, Pr, Refrigerant, State):
+         """Song和Kim拟合的努塞尔计算公式
+         适用条件：1.制冷剂：R-32和R-410A；2.单相流冷凝板式换热器
+
+         :C1:系数1
+         :C2:系数2
+         :Re:单相流体的Re
+         :Pr:液态普朗特数
+         :returns:TODO
+         """
+         if Refrigerant == 'R-32':
+             if State == 'Vapor':
+                 C1=0.07109
+                 C2=0.7775
+                #  Re=
+                #  Pr=
+             elif State == 'Liquid':
+                 C1=0.01801
+                 C2=0.9495
+                #  Re=
+                #  Pr=
+         elif Refrigerant=='R-410A':
+             if State == 'Vapor':
+                 C1=0.01068
+                 C2=0.9907
+                #  Re=
+                #  Pr=
+             elif State == 'Liquid':
+                 C1=0.0151
+                 C2=0.9477
+                #  Re=
+                #  Pr=
+
+         return C1*Re**C2*Pr**(1/3)
+    
+    def Nu_Chisholm_cal(self, Re, Pr, ang_corrugated, projection_coefficient):
+        """Chisholm拟合的努塞尔计算公式
+        适用范围: 1.1000<Re<40000 2. 波纹角30°~80°
+
+        :Re: 雷诺数
+        :Pr: 普朗特数   
+        :ang_corrugated: 波纹角 ° 范围:30°~80°
+        :projection_coefficient: 面积投影系数   
+        :returns: TODO
+        """
+        return 0.72*Re**0.59*projection_coefficient**0.41*(ang_corrugated/30)**0.66*Pr**0.4
+    
+    def Nu_R_D_V_cal(self, Re, Pr):
+        """ Ray D R,Das D K,Vajjha R S拟合的努塞尔计算公式
+        适用范围: 1. Al2O3/EG:Water(~5 vol.%) 2. 4<Pr<27 3. 150<Re<1500
+        :Re: 雷诺数
+        :Pr: 普朗特数
+        :returns: TODO
+        """
+        return 0.3053*Re**0.75*Pr**0.3
 
     
 class NU_TP_class(object):
@@ -256,3 +327,65 @@ class NU_TP_class(object):
         """
         H=Cp_f*Delta_T/gamma # H 表示冷凝膜对冷凝传热影响的无量纲参数
         return 0.00115*(Re_L/H)**0.983*Pr_l**0.33*(rho_l/rho_g)**0.248
+
+    def Nu_SK_cal(self, C1, C2, C3, Re_eq, Pr_l, Co, Refrigerant):
+        """Song和Kim拟合的努塞尔计算公式
+        适用条件：1.制冷剂：R-32和R-410A；2.两相流冷凝板式换热器
+        
+        :C1:系数1
+        :C2:系数2
+        :C3:系数3
+        :Re——eq:TP流体的等效Re
+        :Pr_l:
+        :Co:制冷量
+        :Refrigerant:制冷剂
+        :returns:TODO
+        """
+        if Refrigerant == 'R-32':
+            
+            if 732.1<Re_eq<3797 and 1.855<Pr_l<1.988 and 0.042<Co<0.889:
+                C1=0.4514
+                C2=0.7442
+                C3=0.5059
+            else:
+                self.logger.error("输入参数不在适用范围内")
+                sys.exit()
+
+        elif Refrigerant=='R-410A':
+            if 732.1<Re_eq<3797 and 1.855<Pr_l<1.988 and 0.042<Co<0.889:
+                C1=0.9237
+                C2=0.6316
+                C3=0.5927
+            else:
+                self.logger.error("输入参数不在适用范围内")
+                sys.exit()
+            
+        else:
+            self.logger.error("制冷剂输入错误")
+            sys.exit()
+        return C1*Re_eq**C2*Co**C3* Pr_l**(1/3)
+    
+    def Nu_Behrozifard_cal(self, D, L, Re, Pr):
+        """Behrozifard拟合的努塞尔计算公式
+        适用范围: 1.Re<2300 
+
+        :D: 水力直径 m
+        :L: 通道长度 m
+        :Re: 雷诺数
+        :Pr: 普朗特数
+        :returns: TODO
+        """
+        return 3.66+[0.0668*(D/L)*Re*Pr]/{1+0.04[(D/L)*Pr]**(2/3)}
+    
+    def Nu_Wang_zq_cal(self, Re_eq, Re_lo, Pr, Fr, Bd):
+        """王志奇拟合的努塞尔计算公式
+        适用范围: 1.100<Re<1000 
+
+        :Re_eq: 等效Re
+        :Re_lo: 低压端Re
+        :Pr: 普朗特数
+        :Fr: 
+        :Bd: 表面张力对传热的影响系数
+        :returns: TODO
+        """
+        return 2.2891*Re_eq**1.44*Re_lo**(-0.84)*Pr**(1/3)*Fr**(-0.478)*Bd**(0.757)
