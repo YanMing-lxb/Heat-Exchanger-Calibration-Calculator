@@ -58,6 +58,7 @@ class f_SP_class(object):
         来源：[1] LIM J, SONG K S, KIM D, 等. Condensation heat transfer characteristics of R245fa in a shell and plate heat exchanger for high-temperature heat pumps[J/OL]. International Journal of Heat and Mass Transfer, 2018, 127: 730-739. DOI:10.1016/j.ijheatmasstransfer.2018.06.143.
         """
         return 24502 * Re_eq**(-0.8521) * Re_f**(-0.1856)
+    
     def Gulenoglu_C_1_cal(self, Re,fai):
         """
         Gulenoglu 等人三种垫片板式换热器中使用的的摩擦因子计算公式1（φ=1.17与2相同）
@@ -95,11 +96,12 @@ class f_SP_class(object):
         elif fai==1.17:
             F=1371*Re**(-1.146)+1.139
         return F
+    
     def Alklaibi_cal(self, Re, fai):
         """
         Alklaibi 等人提出的垫片板式换热器中使用的摩擦因子计算公式
         适用范围：Re：300~1000， φ 0~0.3%, β 30°， 工作介质制冷剂（MWCNT/水纳米流体）/水的板式换热器
-         
+
         :Re: 雷诺数   300~1000
         :fai: 颗粒体积浓度
 
