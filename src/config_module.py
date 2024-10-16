@@ -19,7 +19,7 @@
  -----------------------------------------------------------------------
 Author       : 焱铭
 Date         : 2024-10-02 16:01:55 +0800
-LastEditTime : 2024-10-04 18:19:50 +0800
+LastEditTime : 2024-10-16 20:18:33 +0800
 Github       : https://github.com/YanMing-lxb/
 FilePath     : /Heat-Exchanger-Calibration-Calculator/src/config_module.py
 Description  : 
@@ -63,6 +63,7 @@ Density = 135 # 密度 kg/m^3
 Specific_heat_capacity = 1350 # 比热容
 Thermal_conductivity = 21 # 导热率
 Dynamic_viscosity = 0.01 # 动力粘度
+Enthalpy = 1000 # 焓
 
 # 单相热侧液体物性参数 fluid cool single phase physical parameter
 [FCSPPP]
@@ -70,6 +71,7 @@ Density = 135 # 密度 kg/m^3
 Specific_heat_capacity = 1350 # 比热容
 Thermal_conductivity = 21 # 导热率
 Dynamic_viscosity = 0.01 # 动力粘度
+Enthalpy = 1000 # 焓
 """
 
 class ConfigParser:
