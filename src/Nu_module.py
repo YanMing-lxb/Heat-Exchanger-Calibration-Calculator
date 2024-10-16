@@ -19,7 +19,7 @@
  -----------------------------------------------------------------------
 Author       : 焱铭
 Date         : 2024-10-02 15:46:12 +0800
-LastEditTime : 2024-10-16 09:26:53 +0800
+LastEditTime : 2024-10-16 22:11:02 +0800
 Github       : https://github.com/YanMing-lxb/
 FilePath     : /Heat-Exchanger-Calibration-Calculator/src/Nu_module.py
 Description  : 
@@ -281,7 +281,11 @@ class Nu_SP_class(object):
         :mu_w: 不确定
         :returns: TODO
         """
-        return (0.2668-0.006967*ang_corrugated+7.244e-5*ang_corrugated**2)*(20.78-50.94*projection_coefficient+41.16*projection_coefficient**2-10.15*projection_coefficient**3)*Re**{0.728+0.0543*math.sin[(math.pi*ang_corrugated)/45+3.7]}*Pr**(1/3)*(mu_f/mu_w)*0.14
+        if 30< ang_corrugated < 60:
+            return (0.2668-0.006967*ang_corrugated+7.244e-5*ang_corrugated**2)*(20.78-50.94*projection_coefficient+41.16*projection_coefficient**2-10.15*projection_coefficient**3)*Re**{0.728+0.0543*math.sin[(math.pi*ang_corrugated)/45+3.7]}*Pr**(1/3)*(mu_f/mu_w)*0.14
+        else:
+            self.logger.error("Muley和Manglik拟合的努塞尔计算公式仅适用于波纹角30°~60°")
+            sys.exit()
 
     def Nu_SK_cal(self, C1, C2, Re, Pr, Refrigerant, State):
         """Song和Kim拟合的努塞尔计算公式
@@ -339,7 +343,11 @@ class Nu_SP_class(object):
         :projection_coefficient: 面积投影系数   
         :returns: TODO
         """
-        return 0.72*Re**0.59*projection_coefficient**0.41*(ang_corrugated/30)**0.66*Pr**0.4
+        if 30< ang_corrugated < 80 and 1000 < Re < 40000:
+            return 0.72*Re**0.59*projection_coefficient**0.41*(ang_corrugated/30)**0.66*Pr**0.4
+        else:
+            self.logger.error("Chisholm nu 计算公式仅适用于Re 1000~40000 波纹角30°~80°")
+            sys.exit()
 
     def Nu_R_D_V_cal(self, Re, Pr):
         """ Ray D R,Das D K,Vajjha R S拟合的努塞尔计算公式
@@ -348,8 +356,11 @@ class Nu_SP_class(object):
         :Pr: 普朗特数
         :returns: TODO
         """
-        return 0.3053*Re**0.75*Pr**0.3
-
+        if 150 < Re < 1500 and 4 < Pr < 27:
+            return 0.3053*Re**0.75*Pr**0.3
+        else:
+            self.logger.error("Ray D R,Das D K,Vajjha R S nu 计算公式仅适用于Re 150~1500 4<Pr<27")
+            sys.exit()
 
 class NU_TP_class(object):
 
@@ -425,7 +436,11 @@ class NU_TP_class(object):
         :Pr: 普朗特数
         :returns: TODO
         """
-        return 3.66+[0.0668*(D/L)*Re*Pr]/{1+0.04[(D/L)*Pr]**(2/3)}
+        if Re < 2300:
+            return 3.66+[0.0668*(D/L)*Re*Pr]/{1+0.04[(D/L)*Pr]**(2/3)}
+        else:
+            self.logger.error("Behrozifard nu 计算公式仅适用于Re < 2300")
+            sys.exit()
 
     def Nu_Wang_zq_cal(self, Re_eq, Re_lo, Pr, Fr, Bd):
         """王志奇拟合的努塞尔计算公式
@@ -438,4 +453,8 @@ class NU_TP_class(object):
         :Bd: 表面张力对传热的影响系数
         :returns: TODO
         """
-        return 2.2891*Re_eq**1.44*Re_lo**(-0.84)*Pr**(1/3)*Fr**(-0.478)*Bd**(0.757)
+        if 100 < Re_eq < 1000:
+            return 2.2891*Re_eq**1.44*Re_lo**(-0.84)*Pr**(1/3)*Fr**(-0.478)*Bd**(0.757)
+        else:
+            self.logger.error("王志奇 nu 计算公式仅适用于Re 100~1000")
+            sys.exit()
