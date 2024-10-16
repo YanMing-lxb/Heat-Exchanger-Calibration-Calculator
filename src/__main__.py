@@ -19,7 +19,7 @@
  -----------------------------------------------------------------------
 Author       : 焱铭
 Date         : 2024-10-02 14:49:13 +0800
-LastEditTime : 2024-10-08 16:37:41 +0800
+LastEditTime : 2024-10-16 20:19:45 +0800
 Github       : https://github.com/YanMing-lxb/
 FilePath     : /Heat-Exchanger-Calibration-Calculator/src/__main__.py
 Description  : 
@@ -194,11 +194,13 @@ rho_h = cd["FHSPPP"]["Density"]
 cp_h = cd["FHSPPP"]["Specific_heat_capacity"]
 k_fh = cd["FHSPPP"]["Thermal_conductivity"]
 mu_h = cd["FHSPPP"]["Dynamic_viscosity"]
+h_h = cd["FHSPPP"]["Enthalpy"]
 
 rho_c = cd["FCSPPP"]["Density"]
 cp_c = cd["FCSPPP"]["Specific_heat_capacity"]
 k_fc = cd["FCSPPP"]["Thermal_conductivity"]
 mu_c = cd["FCSPPP"]["Dynamic_viscosity"]
+h_c = cd ["FCSPPP"]["Enthalpy"]
 
 
 def Thermal_cal():
