@@ -19,7 +19,7 @@
  -----------------------------------------------------------------------
 Author       : 焱铭
 Date         : 2024-10-02 15:46:12 +0800
-LastEditTime : 2024-10-15 18:45:03 +0800
+LastEditTime : 2024-10-16 08:15:11 +0800
 Github       : https://github.com/YanMing-lxb/
 FilePath     : /Heat-Exchanger-Calibration-Calculator/src/Nu_module.py
 Description  : 
@@ -73,13 +73,13 @@ class Nu_SP_class(object):
             self.logger.error("Okada 努塞尔拟合公式仅适用于波纹角为30°、45°、60°、75°")
         return Nu
     
-    def Gulenoglu_C_1_cal(self, Nu, Re, Pr, mu, mu_w, fai):
+    def Gulenoglu_C_1_cal(self, Nu, Re, Pr, mu, mu_w, phi):
         """Gulenoglu-C 努塞尔计算公式
         适用范围: Re=300-5000,波纹角30°,工质为水
 
         :Re: 雷诺数   300~5000
         :Pr: 普朗特数
-        :fai: 放大系数
+        :phi: 放大系数
         :mu: 平均温度下的动力粘度
         :mu_w: 壁面温度下的黏度
 
@@ -87,19 +87,19 @@ class Nu_SP_class(object):
         Experimental comparison of performances of three different plates for gasketed plate heat exchangers[J]. 
         International Journal of Thermal Sciences, 2014, 75: 249-256.
         """
-        if fai==1.17:
+        if phi==1.17:
             Nu=0.32867*Re**0.68*Pr**(0.1/3)*(mu/mu_w)**0.14
-        elif fai==1.288:
+        elif phi==1.288:
             Nu=0.17422*Re**0.7*Pr**(0.1/3)*(mu/mu_w)**0.14
         return Nu
             
-    def Gulenoglu_C_2_cal(self, Re, Pr, mu, mu_w, fai):
+    def Gulenoglu_C_2_cal(self, Re, Pr, mu, mu_w, phi):
         """Gulenoglu-C 努塞尔计算公式
         适用范围: Re=300-5000,波纹角30°,工质为水
 
         :Re: 雷诺数   300~5000
         :Pr: 普朗特数
-        :fai: 放大系数
+        :phi: 放大系数
         :mu: 平均温度下的动力粘度值
         :mu_w: 壁面温度下的动力黏度值
 
@@ -107,9 +107,9 @@ class Nu_SP_class(object):
         Experimental comparison of performances of three different plates for gasketed plate heat exchangers[J]. 
         International Journal of Thermal Sciences, 2014, 75: 249-256.
         """
-        if fai==1.17:
+        if phi==1.17:
             Nu=0.3277*Re**0.675*Pr**(0.1/3)*(mu/mu_w)**0.14
-        elif fai==1.288:
+        elif phi==1.288:
             Nu=0.17422*Re**0.7*Pr**(0.1/3)*(mu/mu_w)**0.14
         return Nu
     
@@ -129,19 +129,19 @@ class Nu_SP_class(object):
         """
         return 0.0508*Re**0.7304*Pr**0.33(mu_m/mu_w)**0.14
     
-    def Alklaibi_cal(self, Re, Pr, fai):
+    def Alklaibi_cal(self, Re, Pr, phi):
         """Alklaibi 努塞尔计算公式
             适用范围 Re 300~1000, Pr 5.5~6.5, φ 0~0.3%, β 30°， 工作介质制冷剂（MWCNT/水纳米流体）/水的板式换热器
             
             :Re: 雷诺数   300~1000
             :Pr: 普朗特数
-            :fai: 颗粒体积浓度
+            :phi: 颗粒体积浓度
 
             来源：[8] A.M. Alklaibi, L. Syam Sundar, Kotturu V.V. Chandra Mouli,
             Experimental investigation on the performance of hybrid Fe3O4 coated MWCNT/Water nanofluid as a coolant of a Plate heat exchanger,
             International Journal of Thermal Sciences, 171,2022.
             """
-        return 0.1735*Re**0.4655*Pr**0.4*(1+fai)**0.692
+        return 0.1735*Re**0.4655*Pr**0.4*(1+phi)**0.692
     
     # def Tapacob_cal(self,Re,Pr,h,L_s,T_in,T_out,d_e,d_0):
     #     """Tapacob 努塞尔计算公式
