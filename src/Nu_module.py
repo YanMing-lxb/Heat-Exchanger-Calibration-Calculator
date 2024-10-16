@@ -29,6 +29,7 @@ import logging
 import math
 import sys
 
+
 class Nu_SP_class(object):
 
     """单相努塞尔数计算类"""
@@ -144,7 +145,8 @@ class Nu_SP_class(object):
         if 1000 < Re < 3000:
             return 0.0508*Re**0.7304*Pr**0.33(mu_m/mu_w)**0.14
         else:
-            self.logger.error("Lin-Jun-YU 努塞尔计算公式仅适用于Re=1000-3000,工质为水/r245fa,v型角度 β SPHE 50° BPHE 60°,表面放大系数φ SPHE 1.16 BPHE 1.14,波纹纵横比ʘ SPHE 0.27 BPHE 0.25")
+            self.logger.error(
+                "Lin-Jun-YU 努塞尔计算公式仅适用于Re=1000-3000,工质为水/r245fa,v型角度 β SPHE 50° BPHE 60°,表面放大系数φ SPHE 1.16 BPHE 1.14,波纹纵横比ʘ SPHE 0.27 BPHE 0.25")
             sys.exit()
 
     def Alklaibi_cal(self, Re, Pr, phi):
@@ -162,7 +164,8 @@ class Nu_SP_class(object):
         if 300 < Re < 1000:
             return 0.1735*Re**0.4655*Pr**0.4*(1+phi)**0.692
         else:
-            self.logger.error("Alklaibi 努塞尔计算公式仅适用于Re 300~1000,Pr 5.5~6.5,φ 0~0.3%,β 30°， 工作介质制冷剂（MWCNT/水纳米流体）/水的板式换热器")
+            self.logger.error(
+                "Alklaibi 努塞尔计算公式仅适用于Re 300~1000,Pr 5.5~6.5,φ 0~0.3%,β 30°， 工作介质制冷剂（MWCNT/水纳米流体）/水的板式换热器")
             sys.exit()
 
     # def Tapacob_cal(self,Re,Pr,h,L_s,T_in,T_out,d_e,d_0):
@@ -227,7 +230,8 @@ class Nu_SP_class(object):
         elif Re < 20000 and Re > 2000:
             Nu = 0.1579*Re**0.6463*Pr**0.3
         else:
-            self.logger.error("He-Qing-Qiong 努塞尔计算公式仅适用于Re 50~500, 2000~20000 波纹夹角45°，横波波距30mm，纵波波距16mm，纵波波高1.5mm，工质为水、油")
+            self.logger.error(
+                "He-Qing-Qiong 努塞尔计算公式仅适用于Re 50~500, 2000~20000 波纹夹角45°，横波波距30mm，纵波波距16mm，纵波波高1.5mm，工质为水、油")
             sys.exit()
         return Nu
 
@@ -264,7 +268,7 @@ class Nu_SP_class(object):
         Chemical Engineering Science, 2009, 64(14): 3290-3300.
         """
         return 0.247*Re**(0.66)*Pr**0.4
-    
+
     def MM_cal(self, Re, Pr, ang_corrugated, projection_coefficient, mu_f, mu_w):
         """Muley和Manglik拟合的努塞尔计算公式
         适用范围:Re>1000
@@ -280,40 +284,51 @@ class Nu_SP_class(object):
         return (0.2668-0.006967*ang_corrugated+7.244e-5*ang_corrugated**2)*(20.78-50.94*projection_coefficient+41.16*projection_coefficient**2-10.15*projection_coefficient**3)*Re**{0.728+0.0543*math.sin[(math.pi*ang_corrugated)/45+3.7]}*Pr**(1/3)*(mu_f/mu_w)*0.14
 
     def Nu_SK_cal(self, C1, C2, Re, Pr, Refrigerant, State):
-         """Song和Kim拟合的努塞尔计算公式
-         适用条件：1.制冷剂：R-32和R-410A；2.单相流冷凝板式换热器
+        """Song和Kim拟合的努塞尔计算公式
+        适用条件：1.制冷剂：R-32和R-410A；2.单相流冷凝板式换热器
 
-         :C1:系数1
-         :C2:系数2
-         :Re:单相流体的Re
-         :Pr:液态普朗特数
-         :returns:TODO
-         """
-         if Refrigerant == 'R-32':
-             if State == 'Vapor':
-                 C1=0.07109
-                 C2=0.7775
-                #  Re=
-                #  Pr=
-             elif State == 'Liquid':
-                 C1=0.01801
-                 C2=0.9495
-                #  Re=
-                #  Pr=
-         elif Refrigerant=='R-410A':
-             if State == 'Vapor':
-                 C1=0.01068
-                 C2=0.9907
-                #  Re=
-                #  Pr=
-             elif State == 'Liquid':
-                 C1=0.0151
-                 C2=0.9477
-                #  Re=
-                #  Pr=
+        :C1:系数1
+        :C2:系数2
+        :Re:单相流体的Re
+        :Pr:液态普朗特数
+        :returns:TODO
+        """
+        if Refrigerant == 'R-32':
+            if State == 'Vapor':
+                if 2935 < Re < 6311 and 1.414 < Pr < 1.446:
+                    C1 = 0.07109
+                    C2 = 0.7775
+                else:
+                    self.logger.error("输入参数不在适用范围内")
+                    sys.exit()
+            elif State == 'Liquid':
+                if 364.9 < Re < 911.9 and 1.841 < Pr < 1.861:
+                    C1 = 0.01801
+                    C2 = 0.9495
+                else:
+                    self.logger.error("输入参数不在适用范围内")
+                    sys.exit()
+        elif Refrigerant == 'R-410A':
+            if State == 'Vapor':
+                if 3189 < Re < 6136 and 1.678 < Pr < 1.696:
+                    C1 = 0.01068
+                    C2 = 0.09907
+                else:
+                    self.logger.error("输入参数不在适用范围内")
+                    sys.exit()
+            elif State == 'Liquid':
+                if 346.1 < Re < 975.4 and 2.374 < Pr < 2.384:
+                    C1 = 0.0151
+                    C2 = 0.9477
+                else:
+                    self.logger.error("输入参数不在适用范围内")
+                    sys.exit()
+        else:
+            self.logger.error("制冷剂输入错误")
+            sys.exit()
 
-         return C1*Re**C2*Pr**(1/3)
-    
+        return C1*Re**C2*Pr**(1/3)
+
     def Nu_Chisholm_cal(self, Re, Pr, ang_corrugated, projection_coefficient):
         """Chisholm拟合的努塞尔计算公式
         适用范围: 1.1000<Re<40000 2. 波纹角30°~80°
@@ -325,7 +340,7 @@ class Nu_SP_class(object):
         :returns: TODO
         """
         return 0.72*Re**0.59*projection_coefficient**0.41*(ang_corrugated/30)**0.66*Pr**0.4
-    
+
     def Nu_R_D_V_cal(self, Re, Pr):
         """ Ray D R,Das D K,Vajjha R S拟合的努塞尔计算公式
         适用范围: 1. Al2O3/EG:Water(~5 vol.%) 2. 4<Pr<27 3. 150<Re<1500
@@ -366,7 +381,7 @@ class NU_TP_class(object):
     def Nu_SK_cal(self, C1, C2, C3, Re_eq, Pr_l, Co, Refrigerant):
         """Song和Kim拟合的努塞尔计算公式
         适用条件：1.制冷剂：R-32和R-410A；2.两相流冷凝板式换热器
-        
+
         :C1:系数1
         :C2:系数2
         :C3:系数3
@@ -377,29 +392,29 @@ class NU_TP_class(object):
         :returns:TODO
         """
         if Refrigerant == 'R-32':
-            
-            if 732.1<Re_eq<3797 and 1.855<Pr_l<1.988 and 0.042<Co<0.889:
-                C1=0.4514
-                C2=0.7442
-                C3=0.5059
+
+            if 732.1 < Re_eq < 3797 and 1.855 < Pr_l < 1.988 and 0.042 < Co < 0.889:
+                C1 = 0.4514
+                C2 = 0.7442
+                C3 = 0.5059
             else:
                 self.logger.error("输入参数不在适用范围内")
                 sys.exit()
 
-        elif Refrigerant=='R-410A':
-            if 732.1<Re_eq<3797 and 1.855<Pr_l<1.988 and 0.042<Co<0.889:
-                C1=0.9237
-                C2=0.6316
-                C3=0.5927
+        elif Refrigerant == 'R-410A':
+            if 732.1 < Re_eq < 3797 and 1.855 < Pr_l < 1.988 and 0.042 < Co < 0.889:
+                C1 = 0.9237
+                C2 = 0.6316
+                C3 = 0.5927
             else:
                 self.logger.error("输入参数不在适用范围内")
                 sys.exit()
-            
+
         else:
             self.logger.error("制冷剂输入错误")
             sys.exit()
-        return C1*Re_eq**C2*Co**C3* Pr_l**(1/3)
-    
+        return C1*Re_eq**C2*Co**C3 * Pr_l**(1/3)
+
     def Nu_Behrozifard_cal(self, D, L, Re, Pr):
         """Behrozifard拟合的努塞尔计算公式
         适用范围: 1.Re<2300 
@@ -411,7 +426,7 @@ class NU_TP_class(object):
         :returns: TODO
         """
         return 3.66+[0.0668*(D/L)*Re*Pr]/{1+0.04[(D/L)*Pr]**(2/3)}
-    
+
     def Nu_Wang_zq_cal(self, Re_eq, Re_lo, Pr, Fr, Bd):
         """王志奇拟合的努塞尔计算公式
         适用范围: 1.100<Re<1000 
@@ -424,5 +439,3 @@ class NU_TP_class(object):
         :returns: TODO
         """
         return 2.2891*Re_eq**1.44*Re_lo**(-0.84)*Pr**(1/3)*Fr**(-0.478)*Bd**(0.757)
-
-       
