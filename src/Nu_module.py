@@ -28,10 +28,6 @@ Description  :
 import logging
 import math
 import sys
-<<<<<<< HEAD
-=======
-
->>>>>>> 73d71f6d28f2eaa66de85134be173ce73063cd1d
 
 class Nu_SP_class(object):
 
@@ -360,9 +356,12 @@ class NU_TP_class(object):
         :rho_l: 液态密度 kg/m^3
         :rho_g: 气态密度 kg/m^3
         """
-<<<<<<< HEAD
-        H=Cp_f*Delta_T/gamma # H 表示冷凝膜对冷凝传热影响的无量纲参数
-        return 0.00115*(Re_L/H)**0.983*Pr_l**0.33*(rho_l/rho_g)**0.248
+        if 2500 < Re_L < 5000:
+            H = Cp_f*Delta_T/gamma  # H 表示冷凝膜对冷凝传热影响的无量纲参数
+            return 0.00115*(Re_L/H)**0.983*Pr_l**0.33*(rho_l/rho_g)**0.248
+        else:
+            self.logger.error("Wang nu 计算公式仅适用于Re 2500~5000")
+            sys.exit()
 
     def Nu_SK_cal(self, C1, C2, C3, Re_eq, Pr_l, Co, Refrigerant):
         """Song和Kim拟合的努塞尔计算公式
@@ -425,11 +424,5 @@ class NU_TP_class(object):
         :returns: TODO
         """
         return 2.2891*Re_eq**1.44*Re_lo**(-0.84)*Pr**(1/3)*Fr**(-0.478)*Bd**(0.757)
-=======
-        if 2500 < Re_L < 5000:
-            H = Cp_f*Delta_T/gamma  # H 表示冷凝膜对冷凝传热影响的无量纲参数
-            return 0.00115*(Re_L/H)**0.983*Pr_l**0.33*(rho_l/rho_g)**0.248
-        else:
-            self.logger.error("Wang nu 计算公式仅适用于Re 2500~5000")
-            sys.exit()
->>>>>>> 73d71f6d28f2eaa66de85134be173ce73063cd1d
+
+       
